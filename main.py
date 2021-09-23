@@ -29,4 +29,29 @@ content += cnt
 content += '<br>---------------<br>'
 content += '<br><br>End of Message'
 
-print(content)
+# Sending Email
+SERVER = 'smtp.gmail.com'
+PORT = 587
+FROM = ''
+TO = ''
+PASS = ''
+
+msg = MIMEMultipart()
+msg['Subject'] = f'Top News Stories HN [Automated Email] - {str(now.day)} - {str(now.month)} - {str(now.year)}'
+msg['From'] = FROM
+msg['To'] = TO
+
+msg.attach(MIMEText(content, 'html'))
+
+print('Initiating Server......')
+
+server = smtplib.SMTP(SERVER, PORT)
+server.set_debuglevel(1)
+server.ehlo()
+server.starttls()
+server.login(FROM, PASS)
+server.sendmail(FROM, TO, msg.as_string())
+
+print('Email Sent......')
+
+server.quit()
